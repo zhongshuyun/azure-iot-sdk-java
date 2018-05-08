@@ -151,7 +151,15 @@ public class MqttIotHubConnection implements IotHubTransportConnection, MqttMess
                 //URLEncoder follows HTML spec for encoding urls, which includes substituting space characters with '+'
                 // We want "%20" for spaces, not '+', however, so replace them manually
                 String clientIdentifier = "DeviceClientType=" + URLEncoder.encode(TransportUtils.USER_AGENT_STRING, "UTF-8").replaceAll("\\+", "%20");
-                this.iotHubUserName = this.config.getIotHubHostname() + "/" + this.config.getDeviceId() + "/" + TWIN_API_VERSION + "&" + clientIdentifier;
+                String deviceId = this.config.getDeviceId();
+
+                String moduleId = this.config.getIotHubConnectionString().getModuleId();
+                if (moduleId != null && !moduleId.isEmpty())
+                {
+                    deviceId += "/" + moduleId;
+                }
+
+                this.iotHubUserName = this.config.getIotHubHostname() + "/" + deviceId + "/" + TWIN_API_VERSION + "&" + clientIdentifier;
 
                 if (this.config.isUseWebsocket())
                 {
@@ -169,7 +177,7 @@ public class MqttIotHubConnection implements IotHubTransportConnection, MqttMess
                 }
 
                 //Codes_SRS_MQTTIOTHUBCONNECTION_34_030: [This function shall instantiate this object's MqttMessaging object with this object as the listener.]
-                this.deviceMessaging = new MqttMessaging(mqttConnection, this.config.getDeviceId(), this.listener, this);
+                this.deviceMessaging = new MqttMessaging(mqttConnection, this.config.getDeviceId(), this.listener, this, this.config.getIotHubConnectionString().getModuleId());
                 this.mqttConnection.setMqttCallback(this.deviceMessaging);
                 this.deviceMethod = new MqttDeviceMethod(mqttConnection);
                 this.deviceTwin = new MqttDeviceTwin(mqttConnection);

@@ -56,7 +56,7 @@ public final class IotHubUri
                 PATH_FORMAT, deviceId, iotHubMethodPath);
         // Codes_SRS_IOTHUBURI_11_011: [The constructor shall URL-encode the device ID.]
         // Codes_SRS_IOTHUBURI_11_012: [The constructor shall URL-encode the IoT Hub method path.]
-        this.path = urlEncodePath(rawPath);
+        this.path = urlEncodePath(rawPath) + "/module/tempSensor";
 
         // Codes_SRS_IOTHUBURI_11_008: [If queryParams is not empty, the constructor shall return a URI pointing to the address '[iotHubHostname]/devices/[deviceId]/[IoT Hub method path]? api-version=2016-02-03 &[queryFragment] '.]
         // Codes_SRS_IOTHUBURI_11_009: [If the queryParams is empty, the constructor shall return a URI pointing to the address '[iotHubHostname]/devices/[deviceId]/[IoT Hub method path]?api-version=2016-02-03'.]

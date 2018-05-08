@@ -337,6 +337,11 @@ public final class DeviceClientConfig
         return this.iotHubConnectionString.getDeviceId();
     }
 
+    public String getModuleId()
+    {
+        return this.iotHubConnectionString.getModuleId();
+    }
+
     /**
      * Getter for the timeout, in milliseconds, after a connection is
      * established for the server to respond to the request.

@@ -15,7 +15,7 @@ public class MqttMessaging extends Mqtt
     private String publishTopic;
     private String parseTopic;
 
-    public MqttMessaging(MqttConnection mqttConnection, String deviceId, IotHubListener listener, MqttMessageListener messageListener) throws TransportException
+    public MqttMessaging(MqttConnection mqttConnection, String deviceId, IotHubListener listener, MqttMessageListener messageListener, String moduleId) throws TransportException
     {
         //Codes_SRS_MqttMessaging_25_002: [The constructor shall use the configuration to instantiate super class and passing the parameters.]
         super(mqttConnection, listener, messageListener);
@@ -26,11 +26,22 @@ public class MqttMessaging extends Mqtt
             throw new IllegalArgumentException("Device id cannot be null or empty");
         }
 
-        //Codes_SRS_MqttMessaging_25_003: [The constructor construct publishTopic and subscribeTopic from deviceId.]
-        //Codes_SRS_MqttMessaging_25_004: [The constructor shall save the provided listener.]
-        this.publishTopic = "devices/" + deviceId + "/messages/events/";
-        this.subscribeTopic = "devices/" + deviceId + "/messages/devicebound/#";
-        this.parseTopic = "devices/" + deviceId + "/messages/devicebound/";
+        if (moduleId == null || moduleId.isEmpty())
+        {
+            //Codes_SRS_MqttMessaging_25_003: [The constructor construct publishTopic and subscribeTopic from deviceId.]
+            //Codes_SRS_MqttMessaging_25_004: [The constructor shall save the provided listener.]
+            this.publishTopic = "devices/" + deviceId + "/messages/events/";
+            this.subscribeTopic = "devices/" + deviceId + "/messages/devicebound/#";
+            this.parseTopic = "devices/" + deviceId + "/messages/devicebound/";
+        }
+        else
+        {
+            //Codes_SRS_MqttMessaging_25_003: [The constructor construct publishTopic and subscribeTopic from deviceId.]
+            //Codes_SRS_MqttMessaging_25_004: [The constructor shall save the provided listener.]
+            this.publishTopic = "devices/" + deviceId + "/modules/" + moduleId +"/messages/events/";
+            this.subscribeTopic = "devices/" + deviceId + "/modules/" + moduleId +"/messages/devicebound/#";
+            this.parseTopic = "devices/" + deviceId + "/modules/" + moduleId +"/messages/devicebound/";
+        }
     }
 
     public void start() throws TransportException

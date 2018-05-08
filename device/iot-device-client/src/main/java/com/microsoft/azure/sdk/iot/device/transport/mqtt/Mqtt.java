@@ -212,10 +212,12 @@ abstract public class Mqtt implements MqttCallback
 
                 //Codes_SRS_Mqtt_25_014: [The function shall publish message payload on the publishTopic specified to the IoT Hub given in the configuration.]
                 IMqttDeliveryToken publishToken = this.mqttConnection.getMqttAsyncClient().publish(publishTopic, mqttMessage);
+                publishToken.waitForCompletion(60*1000);
                 this.unacknowledgedSentMessages.put(publishToken.getMessageId(), message);
             }
             catch (MqttException e)
             {
+                e.printStackTrace();
                 //Codes_SRS_Mqtt_25_047: [If the Mqtt Client Async throws MqttException, the function shall throw a ProtocolException with the message.]
                 throw PahoExceptionTranslator.convertToMqttException(e, "Unable to publish message on topic : " + publishTopic);
             }

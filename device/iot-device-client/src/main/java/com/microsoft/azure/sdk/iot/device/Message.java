@@ -115,6 +115,10 @@ public class Message
     /// </summary>
     private IotHubConnectionString iotHubConnectionString;
 
+    private String connectionModuleId;
+    private String inputName;
+    private String outputName;
+
     private String deliveryAcknowledgement;
 
     /**
@@ -357,6 +361,11 @@ public class Message
         this.messageId = messageId;
     }
 
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
     /**
      * Getter for the correlationId property
      * @return The property value
@@ -416,6 +425,26 @@ public class Message
         return this.messageType;
     }
 
+    public void setConnectionDeviceId(String connectionDeviceId)
+    {
+        this.connectionDeviceId = connectionDeviceId;
+    }
+
+    public void setConnectionModuleId(String connectionModuleId)
+    {
+        this.connectionModuleId = connectionModuleId;
+    }
+
+    public void setInputName(String inputName)
+    {
+        this.inputName = inputName;
+    }
+
+    public void setOutputName(String outputName)
+    {
+        this.outputName = outputName;
+    }
+
     /**
      * Setter for the Message type
      * @param type The enum containing the Message type value
@@ -434,6 +463,26 @@ public class Message
     {
         // Codes_SRS_MESSAGE_34_041: [The function shall return the message's To value.]
         return this.to;
+    }
+
+    public String getConnectionDeviceId()
+    {
+        return connectionDeviceId;
+    }
+
+    public String getConnectionModuleId()
+    {
+        return connectionModuleId;
+    }
+
+    public String getInputName()
+    {
+        return inputName;
+    }
+
+    public String getOutputName()
+    {
+        return outputName;
     }
 
     /**

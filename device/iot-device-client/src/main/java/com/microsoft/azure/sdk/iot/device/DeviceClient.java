@@ -5,13 +5,15 @@ package com.microsoft.azure.sdk.iot.device;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.*;
-import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.fileupload.FileUpload;
 import com.microsoft.azure.sdk.iot.device.transport.RetryPolicy;
 import com.microsoft.azure.sdk.iot.device.transport.amqps.IoTHubConnectionType;
 import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProvider;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -143,7 +145,7 @@ public final class DeviceClient implements Closeable
             throw new IllegalArgumentException("IoT Hub connection string cannot be null.");
         }
 
-        // Codes_SRS_DEVICECLIENT_12_018: [If the tranportClient is null, the function shall throw an IllegalArgumentException.]
+        // Codes_SRS_DEVICECLIENT_12_018: [If the transportClient is null, the function shall throw an IllegalArgumentException.]
         if (transportClient == null)
         {
             throw new IllegalArgumentException("Transport client cannot be null.");
@@ -195,6 +197,10 @@ public final class DeviceClient implements Closeable
         //Codes_SRS_DEVICECLIENT_21_001: [The constructor shall interpret the connection string as a set of key-value pairs delimited by ';', using the object IotHubConnectionString.]
         //Codes_SRS_DEVICECLIENT_34_055: [If the provided connection string contains an expired SAS token, a SecurityException shall be thrown.]
         IotHubConnectionString iotHubConnectionString = new IotHubConnectionString(connString);
+
+        //TODO check for module id here, and throw unsupported op if contained
+
+
         this.config = new DeviceClientConfig(iotHubConnectionString, DeviceClientConfig.AuthType.SAS_TOKEN);
         this.config.setProtocol(protocol);
 

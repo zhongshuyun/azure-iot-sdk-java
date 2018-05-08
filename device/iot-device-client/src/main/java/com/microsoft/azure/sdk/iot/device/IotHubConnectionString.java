@@ -26,6 +26,8 @@ public class IotHubConnectionString
     /** The shared access signature attribute name in a connection string. */
     private static final String SHARED_ACCESS_TOKEN_ATTRIBUTE = "SharedAccessSignature=";
 
+    private static final String MODULE_ID_ATTRIBUTE = "ModuleId=";
+
     private static final String X509_ENABLED_ATTRIBUTE = "x509=true";
 
     /**
@@ -39,6 +41,7 @@ public class IotHubConnectionString
     private String deviceId = null;
     private String sharedAccessKey = null;
     private String sharedAccessToken = null;
+    private String moduleId = null;
     private boolean isUsingX509 = false;
     private CustomLogger logger = null;
 
@@ -96,6 +99,10 @@ public class IotHubConnectionString
                 {
                     throw new SecurityException("Your SAS Token has expired");
                 }
+            }
+            else if (attr.startsWith(MODULE_ID_ATTRIBUTE))
+            {
+                this.moduleId = attr.substring(MODULE_ID_ATTRIBUTE.length());
             }
         }
 
@@ -203,6 +210,11 @@ public class IotHubConnectionString
     {
         /* Codes_SRS_IOTHUB_CONNECTIONSTRING_21_034: [The getSharedAccessToken shall return the stored shared access token.] */
         return this.sharedAccessToken;
+    }
+
+    public String getModuleId()
+    {
+        return this.moduleId;
     }
 
     /**
